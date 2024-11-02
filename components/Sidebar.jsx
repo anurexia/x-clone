@@ -1,8 +1,15 @@
+"use client";
+
+import { signIn, signOut, useSession } from "next-auth/react";
+
 import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
 import { HiHome } from "react-icons/hi";
 
 const Sidebar = () => {
+  // - access the current session
+  const { data: session } = useSession();
+
   return (
     <nav className="hidden p-6 sm:block">
       <Link href={"/"}>
@@ -17,9 +24,21 @@ const Sidebar = () => {
           </span>
         </div>
 
-        <button className="hidden w-full rounded-full bg-blue-500 p-2 text-blue-50 shadow-md transition-all hover:bg-blue-600 xl:block">
-          Sign In
-        </button>
+        {session ? (
+          <button
+            onClick={() => signOut()}
+            className="hidden w-full rounded-full bg-blue-500 p-2 text-blue-50 shadow-md transition-all hover:bg-blue-600 xl:block"
+          >
+            Sign Out
+          </button>
+        ) : (
+          <button
+            onClick={() => signIn("google")}
+            className="hidden w-full rounded-full bg-blue-500 p-2 text-blue-50 shadow-md transition-all hover:bg-blue-600 xl:block"
+          >
+            Sign In
+          </button>
+        )}
       </div>
     </nav>
   );

@@ -12,6 +12,9 @@ const NewsList = () => {
     const fetchHeadlines = async () => {
       const res = await fetch(
         "https://saurav.tech/NewsAPI/everything/cnn.json",
+        {
+          cache: "no-store",
+        },
       );
 
       if (!res.ok) {
@@ -28,7 +31,7 @@ const NewsList = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex h-auto h-screen flex-col gap-5 rounded-xl bg-neutral-50 px-4 py-8">
+      <div className="flex h-auto flex-col gap-5 rounded-xl bg-neutral-50 px-4 py-8">
         <h2 className="text-xl font-bold text-neutral-600">
           What&apos;s happening?
         </h2>
