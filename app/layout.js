@@ -1,10 +1,10 @@
 import Sidebar from "@/components/Sidebar";
 import "./globals.css";
-import News from "@/components/News";
+import NewsList from "@/components/NewsList";
 
 export const metadata = {
   title: {
-    default: "x-clone",
+    default: "Home",
     template: "%s | x-clone",
   },
   description:
@@ -15,15 +15,22 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <div className="mx-auto flex h-screen max-w-6xl justify-between">
-          <section className="h-screen border-r border-r-neutral-100 transition-all lg:min-w-60">
+        <div className="mx-auto flex h-screen max-w-7xl justify-between">
+          <section className="h-screen border-r-2 border-r-neutral-100 transition-all lg:min-w-60">
             <Sidebar />
           </section>
 
           <section className="w-full">{children}</section>
 
-          <section className="hidden min-w-96 bg-red-500 sm:block">
-            <News />
+          <section className="hidden w-[25rem] max-w-96 border-l-2 border-l-neutral-100 p-4 sm:block md:w-[45rem]">
+            <input
+              className="sticky top-0 mb-8 w-full rounded-full bg-neutral-100 px-4 py-2 text-sm outline-blue-500"
+              type="text"
+              name=""
+              placeholder="Search"
+            />
+
+            <NewsList />
           </section>
         </div>
       </body>

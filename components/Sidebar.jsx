@@ -11,8 +11,8 @@ const Sidebar = () => {
 
       <div className="space-y-6">
         <div className="mt-12 flex cursor-pointer items-center gap-4 rounded-full p-3 transition-all hover:bg-neutral-100">
-          <HiHome className="h-6 w-6 text-neutral-600" />
-          <span className="tracking hidden text-neutral-600 transition-all xl:block">
+          <HiHome className="h-6 w-6 text-neutral-700" />
+          <span className="tracking hidden text-neutral-700 transition-all xl:block">
             Home
           </span>
         </div>

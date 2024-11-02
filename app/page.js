@@ -1,8 +1,10 @@
 function Home() {
   return (
-    <div>
-      <h1 className="text-4xl">Hello World</h1>
-    </div>
+    <main className="p-6">
+      <h1 className="border-b border-neutral-200 text-2xl font-semibold text-neutral-600">
+        Home
+      </h1>
+    </main>
   );
 }
 
