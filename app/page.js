@@ -1,9 +1,12 @@
+import PostForm from "@/components/PostForm";
+
 function Home() {
   return (
-    <main className="p-6">
-      <h1 className="border-b border-neutral-200 text-2xl font-semibold text-neutral-600">
+    <main className="sticky top-0">
+      <h1 className="mb-2 p-4 text-xl font-bold text-neutral-600 sm:text-2xl">
         Home
       </h1>
+      <PostForm />
     </main>
   );
 }
