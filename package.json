@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.1",
+    "date-fns": "^4.1.0",
     "next": "15.0.2",
     "next-auth": "^4.24.10",
     "react": "^18.3.1",

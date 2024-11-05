@@ -18,11 +18,15 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body>
           <div className="mx-auto flex h-screen max-w-7xl justify-between">
-            <section className="h-screen border-r-2 border-r-neutral-100 transition-all lg:min-w-60">
+            {/* add this again if needed
+            border-r-2 border-r-neutral-100 
+          
+           */}
+            <section className="h-screen transition-all lg:min-w-60">
               <Sidebar />
             </section>
 
-            <section className="w-full">{children}</section>
+            <section className="h-full w-full">{children}</section>
 
             <section className="hidden w-[25rem] max-w-96 border-l-2 border-l-neutral-100 p-4 sm:block md:w-[45rem]">
               <input

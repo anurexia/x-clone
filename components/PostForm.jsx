@@ -46,7 +46,7 @@ const PostForm = () => {
     setIsPosting(true);
 
     try {
-      const { userId, image, username } = session.user;
+      const { userId, image, username, name } = session.user;
 
       const fileName = `${userId}/${uuidv7()}${currentImage.name}`;
 
@@ -59,6 +59,7 @@ const PostForm = () => {
 
       const { error: postError } = await supabase.from("posts").insert({
         uid: userId,
+        name,
         username,
         text,
         profile_image: image,
@@ -85,7 +86,10 @@ const PostForm = () => {
     <div className="flex h-auto border-y-2 border-y-neutral-100">
       {session && (
         <>
-          <Avatar />
+          <div className="flex h-full w-1/6 items-center justify-center py-2">
+            <Avatar profile_image={session?.user?.image} />
+          </div>
+
           <div className="flex h-full w-full flex-col">
             <PostInput
               onRemoveImage={handleRemoveImage}

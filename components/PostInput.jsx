@@ -16,9 +16,7 @@ const PostInput = ({
       <textarea
         value={text}
         onChange={onChangeText}
-        className="text-md h-24 resize-none pt-4 outline-none placeholder:text-lg placeholder:tracking-wide placeholder:text-neutral-600"
-        name=""
-        id=""
+        className="text-md h-24 resize-none pt-4 font-medium outline-none placeholder:text-lg placeholder:tracking-wide placeholder:text-neutral-400"
         placeholder="What's happening?"
         spellCheck={false}
         minLength={0}

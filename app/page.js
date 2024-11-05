@@ -1,3 +1,4 @@
+import Feed from "@/components/Feed";
 import PostForm from "@/components/PostForm";
 
 function Home() {
@@ -7,6 +8,7 @@ function Home() {
         Home
       </h1>
       <PostForm />
+      <Feed />
     </main>
   );
 }
