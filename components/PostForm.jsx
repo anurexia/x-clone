@@ -8,14 +8,13 @@ import { useSession } from "next-auth/react";
 import { supabase } from "@/services/supabase";
 import { v7 as uuidv7 } from "uuid";
 import { MAX_CHARS } from "@/lib/constants";
-import { FaSpinner } from "react-icons/fa6";
 
 const PostForm = () => {
   const [text, setText] = useState("");
   const [currentImage, setCurrentImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const imagePickerRef = useRef(null);
-  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
 
   const { data: session } = useSession();
 
@@ -43,17 +42,34 @@ const PostForm = () => {
   };
 
   const handlePost = async () => {
-    const userId = session.user.userId;
-    setIsImageUploading(true);
+    if (!currentImage) return; // Ensure there's an image selected
+    setIsPosting(true);
 
     try {
-      await supabase.storage
+      const { userId, image, username } = session.user;
+
+      const fileName = `${userId}/${uuidv7()}${currentImage.name}`;
+
+      await supabase.storage.from("images").upload(fileName, currentImage);
+
+      // Get the public URL of the uploaded image
+      const { data: publicURLData } = supabase.storage
         .from("images")
-        .upload(`${userId}/${uuidv7()}${currentImage.name}`, currentImage);
+        .getPublicUrl(fileName);
+
+      const { error: postError } = await supabase.from("posts").insert({
+        uid: userId,
+        username,
+        text,
+        profile_image: image,
+        image_url: publicURLData.publicUrl,
+      });
+
+      if (postError) throw postError;
     } catch (error) {
-      console.log(error);
+      console.error("Post error:", error.message);
     } finally {
-      setIsImageUploading(false);
+      setIsPosting(false);
       setText("");
       setCurrentImage(null);
       setImageUrl(null);
@@ -76,6 +92,7 @@ const PostForm = () => {
               text={text}
               onChangeText={handleChangeText}
               imageUrl={imageUrl}
+              isPosting={isPosting}
             />
 
             <div className="flex items-center justify-between p-2">
@@ -96,11 +113,11 @@ const PostForm = () => {
               <button
                 onClick={handlePost}
                 disabled={
-                  !text.length || text.length === MAX_CHARS || isImageUploading
+                  !text.trim().length || text.length === MAX_CHARS || isPosting
                 }
                 className={`hover:bg-blue-600" rounded-full bg-blue-500 px-6 py-2 text-sm font-semibold uppercase tracking-wide text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-80 disabled:brightness-95 sm:px-8`}
               >
-                {isImageUploading ? "Loading.." : "post"}
+                {isPosting ? "Posting.." : "post"}
               </button>
             </div>
           </div>

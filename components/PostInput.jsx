@@ -4,7 +4,13 @@ import { MAX_CHARS } from "@/lib/constants";
 import Image from "next/image";
 import { HiMiniXCircle } from "react-icons/hi2";
 
-const PostInput = ({ onChangeText, text, imageUrl, onRemoveImage }) => {
+const PostInput = ({
+  onChangeText,
+  text,
+  imageUrl,
+  onRemoveImage,
+  isPosting,
+}) => {
   return (
     <div className="flex flex-col gap-2">
       <textarea
@@ -26,7 +32,7 @@ const PostInput = ({ onChangeText, text, imageUrl, onRemoveImage }) => {
             alt=""
             width={100}
             height={100}
-            className="h-full w-full object-cover brightness-90"
+            className={`h-full w-full object-cover brightness-90 ${isPosting ? "animate-pulse" : ""}`}
           />
 
           <HiMiniXCircle

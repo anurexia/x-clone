@@ -2,7 +2,6 @@ import Image from "next/image";
 import { IoIosMore } from "react-icons/io";
 
 const MiniProfile = ({ user }) => {
-  console.log(user);
   return (
     <div className="flex w-full cursor-pointer items-center gap-2 rounded-full p-2 transition-all hover:bg-neutral-100 sm:mt-auto">
       <div className="h-12 w-12">
