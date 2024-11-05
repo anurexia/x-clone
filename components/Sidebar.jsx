@@ -11,7 +11,7 @@ const Sidebar = () => {
   const { data: session } = useSession();
 
   return (
-    <nav className="fixed hidden h-full p-6 sm:flex sm:flex-col">
+    <nav className="fixed hidden h-full border-r-2 border-neutral-100 p-6 sm:flex sm:flex-col">
       <Link href={"/"}>
         <FaXTwitter className="h-12 w-12 rounded-full p-2 transition-all hover:bg-neutral-100" />
       </Link>

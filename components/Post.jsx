@@ -3,6 +3,7 @@ import Image from "next/image";
 import Avatar from "./Avatar";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import Link from "next/link";
+import PostActions from "./PostActions";
 
 const Post = ({
   post: { created_at, image_url, profile_image, text, uid, username, name, id },
@@ -10,13 +11,13 @@ const Post = ({
   const formattedDate = formatDate(created_at);
 
   return (
-    <div className="flex flex-col gap-4 p-4 transition-all duration-300 hover:rounded-2xl hover:bg-neutral-100">
+    <div className="flex flex-col gap-4 rounded-b-2xl border-b p-4 hover:rounded-2xl">
       <div className="flex w-full items-center gap-4">
         <Avatar profile_image={profile_image} />
 
         <div className="flex items-end gap-1">
-          <h2 className="truncate text-sm font-semibold">{name}</h2>
-          <p className="truncate">@{username}</p>
+          <h2 className="text-md truncate font-semibold">{name}</h2>
+          <p className="tracking truncate">@{username}</p>
           <p className="ml-1 text-sm text-neutral-500">{formattedDate}</p>
         </div>
         <HiOutlineDotsHorizontal className="ml-auto" />
@@ -37,6 +38,8 @@ const Post = ({
           />
         )}
       </Link>
+
+      <PostActions />
     </div>
   );
 };

@@ -17,12 +17,12 @@ export default function RootLayout({ children }) {
     <SessionWrapper>
       <html lang="en">
         <body>
-          <div className="mx-auto flex h-screen max-w-7xl justify-between">
+          <div className="mx-auto flex h-auto max-w-7xl justify-between">
             {/* add this again if needed
             border-r-2 border-r-neutral-100 
           
            */}
-            <section className="h-screen transition-all lg:min-w-60">
+            <section className="h-auto transition-all lg:min-w-60">
               <Sidebar />
             </section>
 
