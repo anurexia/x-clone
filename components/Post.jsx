@@ -39,7 +39,7 @@ const Post = ({
 
     fetchLikes();
 
-    const channels = supabase
+    const subscription = supabase
       .channel("likes")
       .on(
         "postgres_changes",
@@ -50,18 +50,19 @@ const Post = ({
           // filter: "post_id=eq.${postId}",
         },
         (payload) => {
-          console.log(payload);
           if (payload.eventType === "INSERT") {
             setLikeCounts((previousCount) => previousCount + 1);
+            location.reload();
           } else if (payload.eventType === "DELETE") {
             setLikeCounts((previousCount) => Math.max(previousCount - 1, 0));
+            location.reload();
           }
         },
       )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channels);
+      subscription.unsubscribe();
     };
   }, [postId]);
 
@@ -94,7 +95,7 @@ const Post = ({
         )}
       </Link>
 
-      <PostActions postId={postId} likeCounts={likeCounts} />
+      <PostActions postId={postId} uid={uid} likeCounts={likeCounts} />
     </div>
   );
 };

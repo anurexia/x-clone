@@ -32,7 +32,17 @@ const Feed = () => {
           table: "posts",
         },
         (payload) => {
-          setPosts((currentPosts) => [payload.new, ...currentPosts]);
+          try {
+            if (payload.eventType === "INSERT") {
+              setPosts((previousPosts) => [payload.new, ...previousPosts]);
+            } else if (payload.eventType === "DELETE") {
+              setPosts((previousPosts) =>
+                previousPosts.filter((post) => post.id !== payload.old.id),
+              );
+            }
+          } catch (error) {
+            console.error("Error handling postgres change event: ", error);
+          }
         },
       )
       .subscribe();

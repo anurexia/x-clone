@@ -10,11 +10,12 @@ import {
   HiHeart,
 } from "react-icons/hi2";
 
-const PostActions = ({ postId, likeCounts }) => {
+const PostActions = ({ postId, likeCounts, uid }) => {
   const { data: session } = useSession();
   const [hasLiked, setHasLiked] = useState(false);
 
-  const { userId, username } = session?.user;
+  const username = session?.user?.username;
+  const userId = session?.user?.userId;
 
   const handleLikePost = async () => {
     if (!session) {
@@ -72,48 +73,19 @@ const PostActions = ({ postId, likeCounts }) => {
     }
   }, [userId, postId]);
 
-  // useEffect(() => {
-  //   const fetchLikes = async () => {
-  //     const { data, error, count } = await supabase
-  //       .from("likes")
-  //       .select("*", { count: "exact" })
-  //       .eq("post_id", postId);
+  const handleDeletePost = async () => {
+    if (confirm("Do you want to delete this post?")) {
+      if (userId === uid) {
+        const { error } = await supabase
+          .from("posts")
+          .delete()
+          .eq("id", postId);
+        if (error) throw error;
+      }
+    }
 
-  //     if (error) {
-  //       console.error("Error fetching like counts: ", error);
-  //       return;
-  //     }
-
-  //     setLikeCounts(count || data.length);
-  //   };
-
-  //   fetchLikes();
-
-  //   const channels = supabase
-  //     .channel("likes")
-  //     .on(
-  //       "postgres_changes",
-  //       {
-  //         event: "*",
-  //         schema: "public",
-  //         table: "likes",
-  //         // filter: "post_id=eq.${postId}",
-  //       },
-  //       (payload) => {
-  //         console.log(payload);
-  //         if (payload.eventType === "INSERT") {
-  //           setLikeCounts((previousCount) => previousCount + 1);
-  //         } else if (payload.eventType === "DELETE") {
-  //           setLikeCounts((previousCount) => Math.max(previousCount - 1, 0));
-  //         }
-  //       },
-  //     )
-  //     .subscribe();
-
-  //   return () => {
-  //     supabase.removeChannel(channels);
-  //   };
-  // }, [postId]);
+    return;
+  };
 
   const iconClass =
     "h-10 w-10 cursor-pointer rounded-full p-2 transition-all duration-300 hover:bg-blue-100 hover:text-blue-600 ease-in-out";
@@ -132,7 +104,9 @@ const PostActions = ({ postId, likeCounts }) => {
         </span>
       </div>
 
-      <HiOutlineTrash className={iconClass} />
+      {uid === userId && (
+        <HiOutlineTrash onClick={handleDeletePost} className={iconClass} />
+      )}
     </div>
   );
 };
