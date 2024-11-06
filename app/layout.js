@@ -2,6 +2,7 @@ import Sidebar from "@/components/Sidebar";
 import "./globals.css";
 import NewsList from "@/components/NewsList";
 import SessionWrapper from "@/components/SessionWrapper";
+import CommentModal from "@/components/CommentModal";
 
 export const metadata = {
   title: {
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
               <NewsList />
             </section>
           </div>
+          <CommentModal />
         </body>
       </html>
     </SessionWrapper>
