@@ -39,11 +39,9 @@ const Feed = () => {
 
     // - cleanup
     return () => {
-      supabase.removeChannel(subscription);
+      subscription.unsubscribe();
     };
   }, []);
-
-  console.log(posts);
 
   return (
     <section className="w-full">

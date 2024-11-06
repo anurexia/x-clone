@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
             border-r-2 border-r-neutral-100 
           
            */}
-            <section className="h-auto transition-all lg:min-w-60">
+            <section className="h-auto transition-all lg:min-w-56">
               <Sidebar />
             </section>
 
