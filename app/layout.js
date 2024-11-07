@@ -16,13 +16,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <SessionWrapper>
-      <html lang="en">
+      <html lang="en" className="scroll-smooth">
         <body>
           <div className="mx-auto flex h-auto max-w-7xl justify-between">
-            {/* add this again if needed
-            border-r-2 border-r-neutral-100 
-          
-           */}
             <section className="h-auto transition-all lg:min-w-56">
               <Sidebar />
             </section>

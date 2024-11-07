@@ -1,4 +1,5 @@
 "use client";
+import { useModal } from "@/context/ModalContext";
 import { supabase } from "@/services/supabase";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -13,9 +14,10 @@ import {
 const PostActions = ({ postId, likeCounts, uid }) => {
   const { data: session } = useSession();
   const [hasLiked, setHasLiked] = useState(false);
-
   const username = session?.user?.username;
   const userId = session?.user?.userId;
+
+  const { setOpen, setPostId } = useModal();
 
   const handleLikePost = async () => {
     if (!session) {
@@ -91,7 +93,18 @@ const PostActions = ({ postId, likeCounts, uid }) => {
     "h-10 w-10 cursor-pointer rounded-full p-2 transition-all duration-300 hover:bg-blue-100 hover:text-blue-600 ease-in-out";
   return (
     <div className="flex items-center gap-6">
-      <HiOutlineChatBubbleOvalLeftEllipsis className={iconClass} />
+      <HiOutlineChatBubbleOvalLeftEllipsis
+        onClick={() => {
+          // - make sure the user is signed in
+          if (!session) {
+            signIn("google");
+          } else {
+            setOpen((open) => !open);
+            setPostId(postId);
+          }
+        }}
+        className={iconClass}
+      />
 
       <div className="flex items-center gap-2">
         {hasLiked ? (

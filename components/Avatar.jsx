@@ -7,7 +7,7 @@ const Avatar = ({ profile_image }) => {
   return (
     <Image
       src={profile_image || "/default profile.webp"}
-      className="h-10 w-10 self-start rounded-full bg-neutral-500 sm:h-12 sm:w-12"
+      className="h-10 w-10 cursor-pointer self-start rounded-full bg-neutral-500 hover:brightness-95 sm:h-12 sm:w-12"
       alt="user avatar"
       height={100}
       width={100}
