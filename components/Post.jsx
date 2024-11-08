@@ -4,8 +4,6 @@ import Avatar from "./Avatar";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import Link from "next/link";
 import PostActions from "./PostActions";
-import { supabase } from "@/services/supabase";
-import { useEffect, useState } from "react";
 
 const Post = ({
   post: {
@@ -20,51 +18,6 @@ const Post = ({
   },
 }) => {
   const formattedDate = formatDate(created_at);
-  const [likeCounts, setLikeCounts] = useState(0);
-
-  useEffect(() => {
-    const fetchLikes = async () => {
-      const { data, error, count } = await supabase
-        .from("likes")
-        .select("*", { count: "exact" })
-        .eq("post_id", postId);
-
-      if (error) {
-        console.error("Error fetching like counts: ", error);
-        return;
-      }
-
-      setLikeCounts(count || data.length);
-    };
-
-    fetchLikes();
-
-    const subscription = supabase
-      .channel("likes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "likes",
-          // filter: "post_id=eq.${postId}",
-        },
-        (payload) => {
-          if (payload.eventType === "INSERT") {
-            setLikeCounts((previousCount) => previousCount + 1);
-            location.reload();
-          } else if (payload.eventType === "DELETE") {
-            setLikeCounts((previousCount) => Math.max(previousCount - 1, 0));
-            location.reload();
-          }
-        },
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [postId]);
 
   return (
     <div className="flex flex-col gap-4 rounded-b-2xl border-b p-4 hover:rounded-2xl">
@@ -95,7 +48,7 @@ const Post = ({
         )}
       </Link>
 
-      <PostActions postId={postId} uid={uid} likeCounts={likeCounts} />
+      <PostActions postId={postId} uid={uid} />
     </div>
   );
 };

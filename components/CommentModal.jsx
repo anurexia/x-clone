@@ -9,13 +9,37 @@ import Image from "next/image";
 import { HiX } from "react-icons/hi";
 import Modal from "react-modal";
 import Avatar from "./Avatar";
+import { useRouter } from "next/navigation";
+import { useFetchComments } from "@/hooks/useFetchComments";
 
 const CommentModal = () => {
   const { open, postId, setOpen } = useModal();
   const [currentPost, setCurrentPost] = useState({});
   const [text, setText] = useState("");
-
   const { data: session } = useSession();
+  const router = useRouter();
+
+  const handleComment = async () => {
+    if (!text.length) return;
+
+    try {
+      const { error: commentError } = await supabase.from("comments").insert({
+        name: session.user.name,
+        post_id: postId,
+        comment: text,
+        uid: session.user.userId,
+        username: session.user.username,
+      });
+
+      if (commentError) throw commentError;
+    } catch (error) {
+      console.error(error);
+    }
+
+    setOpen(!open);
+    setText("");
+    router.push(`/posts/${postId}`);
+  };
 
   useEffect(() => {
     const fetchCurrentPost = async () => {
@@ -47,8 +71,6 @@ const CommentModal = () => {
     }
   }, [postId]);
 
-  console.log(currentPost);
-
   return (
     <div>
       {open && (
@@ -74,7 +96,7 @@ const CommentModal = () => {
               <div className="flex gap-3">
                 <div className="relative">
                   <span className="absolute left-1/2 top-1/2 z-[-1] h-24 w-1 translate-x-[-50%] bg-neutral-200"></span>
-                  <Avatar profile_image={session.user.image} />
+                  <Avatar profile_image={currentPost?.profile_image} />
                 </div>
 
                 <div className="flex-1 space-y-2">
@@ -88,13 +110,15 @@ const CommentModal = () => {
                   </div>
 
                   {/* main content */}
-                  <p className="text-md font-normal">{currentPost?.text}</p>
+                  <div className="space-y-1">
+                    <p className="text-md font-normal">{currentPost?.text}</p>
+                  </div>
                 </div>
               </div>
 
               <div className="mt-4 flex items-center gap-3">
                 <div className="self-start">
-                  <Avatar profile_image={currentPost?.profile_image} />
+                  <Avatar profile_image={session.user.image} />
                 </div>
 
                 <textarea
@@ -110,6 +134,7 @@ const CommentModal = () => {
 
               <div className="flex w-full justify-end">
                 <button
+                  onClick={handleComment}
                   disabled={!text.length || text.trim() === ""}
                   className="tracking cursor-pointer rounded-full bg-blue-500 px-8 py-2 text-sm font-semibold uppercase text-neutral-100 shadow-md transition-all duration-300 hover:brightness-95 disabled:cursor-not-allowed lg:px-10 lg:py-3"
                 >
