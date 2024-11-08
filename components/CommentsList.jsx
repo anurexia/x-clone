@@ -19,7 +19,7 @@ const CommentsList = async ({ postId }) => {
   return (
     <div className="ml-8 space-y-6">
       {comments.map((comment) => (
-        <Comment key={comment.id} comment={comment} />
+        <Comment key={comment.id} comment={comment} postId={postId} />
       ))}
     </div>
   );
