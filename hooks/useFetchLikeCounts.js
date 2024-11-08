@@ -31,6 +31,10 @@ export const useFetchLikeCounts = (postId) => {
                 payload.new,
                 ...previousPostLikes,
               ]);
+            } else if (payload.eventType === "DELETE") {
+              setLikes((previousPostLikes) =>
+                previousPostLikes.filter((post) => post.id !== payload.old.id),
+              );
             }
           } catch (error) {
             console.error("Error handling postgres change event: ", error);

@@ -92,12 +92,13 @@ const PostActions = ({ postId, uid }) => {
         ) : (
           <HiOutlineHeart onClick={handleLikePost} className={iconClass} />
         )}
+
         <span className="text-sm font-semibold text-neutral-600">
-          {likesCount}
+          {likesCount || ""}
         </span>
       </div>
 
-      {uid === userId && (
+      {userId && uid === userId && (
         <HiOutlineTrash onClick={handleDeletePost} className={iconClass} />
       )}
     </div>

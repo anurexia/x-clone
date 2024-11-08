@@ -29,6 +29,7 @@ const CommentModal = () => {
         comment: text,
         uid: session.user.userId,
         username: session.user.username,
+        profile_image: session.user.image,
       });
 
       if (commentError) throw commentError;
